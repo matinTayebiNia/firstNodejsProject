@@ -1,0 +1,119 @@
+<div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+    <h2>ویرایش دوره</h2>
+</div>
+<form class="form-horizontal" action="/admin/course/update/<%- course._id %>?_method=put&_csrf=<%=req.csrfToken()%>" method="post"
+      enctype="multipart/form-data">
+    <%- csrf_filed() %>
+
+    <div class="form-group row">
+        <div class="col">
+            <label for="title" class="control-label font-weight-bold">عنوان دوره</label>
+            <input type="text" class="form-control <% if (errors('title')){ %> is-invalid <% } %>" name="title"
+                   id="title" placeholder="عنوان را وارد کنید"
+                   value="<%- old('title', course.title) %>">
+            <% if (errors('title')){ %>
+                <span class="invalid-feedback"><%- errors('title') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="type" class="control-label font-weight-bold font-weight-bold">نوع دوره</label>
+            <select name="type" id="type" class="form-control  <% if (errors('type')){ %> is-invalid <% } %>">
+                <option value="vip" <%- course.type === 'vip' ? 'selected' : '' %> >اعضای ویژه</option>
+                <option value="cash" <%- course.type === 'cash' ? 'selected' : '' %> >نقدی</option>
+                <option value="free" <%- course.type === 'free' ? 'selected' : '' %> >رایگان</option>
+            </select>
+            <% if (errors('type')){ %>
+                <span class="invalid-feedback"><%- errors('type') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="category" class="control-label font-weight-bold font-weight-bold">دسته بندی</label>
+            <select name="categories[]" id="category" multiple
+                    class="form-control  <% if (errors('category')){ %> is-invalid <% } %>">
+                <% categories.forEach(category=>{ %>
+                    <option value="<%= category.id %>"
+                            <%= old('categories', course.categories.indexOf(category.id) !== -1) ? 'selected' : '' %> ><%= category.name %></option>
+                <% }) %>
+            </select>
+            <% if (errors('category')){ %>
+                <span class="invalid-feedback"><%- errors('category') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="body" class="control-label font-weight-bold">متن</label>
+            <textarea rows="10" class="form-control <% if (errors('body')){ %> is-invalid <% } %>" name="body" id="body"
+                      placeholder="متن مقاله را وارد کنید">
+                <%- old('body', course.body) %>
+            </textarea>
+            <% if (errors('body')){ %>
+                <span class="invalid-feedback"><%- errors('body') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="images" class="control-label font-weight-bold">تصویر دوره</label>
+            <input type="file" class="form-control  <% if (errors('images')){ %> is-invalid <% } %>"
+                   name="images" value="<%- old('images') %>" id="images"
+                   placeholder="تصویر مقاله را وارد کنید">
+            <% if (errors('images')){ %>
+                <span class="invalid-feedback"><%- errors('images') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <label for="" class="control-label font-weight-bold ">تصویر پیشفرض</label>
+    <div class="form-group row">
+        <% Object.entries(course.images).forEach(([size, image]) => { %>
+            <div class="col-sm-2">
+                <label class="control-label">
+                    <%= size %>
+                    <input type="radio" name="imagesThumb" value="<%= image %>" checked="">
+                    <a href="<%= image %>" target="_blank"><img src="<%= image %>" width="100%"></a>
+                </label>
+            </div>
+        <% }) %>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="price" class="control-label font-weight-bold">قیمت</label>
+            <input type="text" class="form-control <% if (errors('price')){ %> is-invalid <% } %>" name="price"
+                   id="price" placeholder="قیمت ها را وارد کنید"
+                   value="<%- old('price', course.price) %>">
+            <% if (errors('price')){ %>
+                <span class="invalid-feedback"><%- errors('price') %> </span>
+            <% } %>
+        </div>
+        <div class="col">
+            <label for="tags" class="control-label font-weight-bold">تگ ها</label>
+            <input type="text" class="form-control <% if (errors('tags')){ %> is-invalid <% } %>" name="tags" id="tags"
+                   value="<%- old('tags', course.tags) %>"
+                   placeholder="تگ ها را وارد کنید" value="">
+            <% if (errors('tags')){ %>
+                <span class="invalid-feedback"><%- errors('tags') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <button type="submit" class="btn btn-danger">ارسال</button>
+        </div>
+    </div>
+</form>
+
+<link rel="stylesheet" href="/css/select2.min.css">
+<script src="/ckeditor/ckeditor.js"></script>
+<script src="/js/select2.min.js"></script>
+<script>
+    $('#category').select2({
+        dir:'rtl'
+    });
+    CKEDITOR.replace('body',{
+        filebrowserUploadUrl:"/admin/upload-image"
+    })
+</script>

@@ -1,0 +1,112 @@
+<% if(auth.check) { %>
+    <div class="card my-4">
+        <h5 class="card-header">ثبت نظر :</h5>
+        <div class="card-body">
+            <form role="form" action="/comment" method="post">
+                <%- csrf_filed() %>
+                <input type="hidden" name="parent_id" value>
+                <input type="hidden" name="<%= subject.constructor.modelName.toLowerCase() %>"
+                       value="<%= subject.id %>">
+                <div class="form-group">
+                    <textarea name="comment" class="form-control <% if (errors('comment')){ %> is-invalid <% } %>"
+                              rows="3">
+                        <%= old('comment') %> 
+                    </textarea>
+                    <% if(errors('comment')){ %>
+                        <span class="invalid-feedback">
+                            <%- errors('comment') %>
+                        </span>
+                    <% } %>
+                </div>
+                <button type="submit" class="btn btn-primary">ارسال</button>
+            </form>
+        </div>
+    </div>
+<% } else { %>
+    <div class="alert alert-warning">
+        شما برای ثبت نظر باید وارد سایت شوید
+    </div>
+<% } %>
+<hr>
+<% comments.forEach(item=>{ %>
+    <div class="media mb-4">
+        <img class="d-flex ml-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+        <div class="media-body">
+            <h5 class="mt-0">
+                <%= item.user.name %>
+
+                <% if(auth.check) { %>
+                    <button class="float-left btn-sm btn btn-xs btn-success" data-toggle="modal"
+                            data-target="#sendCommentModal" data-parent="<%= item.id %>">پاسخ
+                    </button>
+                <% } %>
+            </h5>
+            <%= item.comment %>-
+            <small class="text-muted"><%= PersianDate(item.createdAt).fromNow() %></small>
+            <% item.parentComment.forEach(comment=>{ %>
+                <div class="media mt-4">
+                    <img class="d-flex ml-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">
+                            <%= comment.user.name %>
+                        </h5>
+                        <%= comment.comment %>-
+                        <small>
+                            <%= PersianDate(comment.createdAt).fromNow() %>
+                        </small>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+<% }) %>
+
+<!-- Comment -->
+<% if(auth.check) { %>
+    <div class="modal fade" id="sendCommentModal" tabindex="-1" role="dialog"
+         aria-labelledby="sendCommentModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">ارسال پاسخ</h4>
+                    <button type="button" class="close" style="margin-left: -1rem;" data-dismiss="modal"
+                            aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/comment" method="post">
+
+                        <input type="hidden" id="parent" name="parent" value>
+                        <input type="hidden" name="<%= subject.constructor.modelName.toLowerCase() %>"
+                               value="<%= subject.id %>">
+
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">متن
+                                پاسخ:</label>
+                            <textarea class="form-control <% if (errors('comment')){ %> is-invalid <% } %> " rows="3"
+                                      id="message-text" name="comment">
+
+                            </textarea>
+                            <% if(errors('comment')){ %>
+                                <span class="invalid-feedback"><%= errors('comment') %></span>
+                            <% } %>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">ارسال</button>
+                            <button type="button" class="btn btn-default mr-2 ml-0"
+                                    data-dismiss="modal">انصراف
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#sendCommentModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget);
+            let parent_id = button.data('parent');
+            let modal = $(this);
+            modal.find('.modal-body #parent').val(parent_id);
+        })
+    </script>
+<% } %>

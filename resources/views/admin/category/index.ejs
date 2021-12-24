@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-between align-items-center mb-3 border-bottom-1">
+    <h2>دسته بندی ها</h2>
+    <div class="btn-group">
+        <% if (can('create-categories')){ %>
+            <a href="/admin/categories/create" class="btn btn-sm btn-primary">ایجاد دسته بندی جدید</a>
+        <% } %>
+    </div>
+</div>
+
+<div class="card-body table-responsive p-0">
+    <ul class="list-group list-group-flush">
+        <% categories.docs.map(category => { %>
+            <li class="list-group-item">
+                <div class="d-flex">
+                    <span><%= category.name %></span>
+                    <div class="actions mr-2">
+                        <% if (can('delete-categories')){ %>
+                            <form method="post" id="cate-<%= category.id %>-delete"
+                                  action="/admin/categories/delete/<%= category.id %>?_method=delete">
+                                <%- csrf_filed() %>
+                                <input type="hidden" name="category_id" value="<%= category.id %>">
+                            </form>
+                            <a href="#"
+                               onclick="let result=confirm('ایا از حذف دسته بر مورد نظر مطمعن هستید؟');
+                                       if (result){event.preventDefault();document.getElementById('cate-<%= category.id %>-delete').submit()}"
+                               class="badge badge-danger">حذف</a>
+                        <% } %>
+                        <% if (can('edit-categories')){ %>
+                            <a href="/admin/categories/<%= category.id %>/edit"
+                               class="badge badge-warning">ویرایش</a>
+                        <% } %>
+                        <% if (can('create-categories')){ %>
+                            <a href="/admin/categories/create?parent=<%= category.id %>"
+                               class="badge badge-primary">افزودن زیر دسته</a>
+                        <% } %>
+                    </div>
+                </div>
+            </li>
+            <% if(category.chileCategory){ %>
+                <%- include('./category-group',{categories:category.chileCategory}) -%>
+            <% } %>
+        <% }); %>
+
+    </ul>
+
+    <%- include(viewPath('layouts/pagination'),{pagination:categories}) %>
+
+    <div class="modal fade" id="deleteCourse" tabindex="-1" role="dialog" aria-labelledby="deleteCourseLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" style="color: red" id="exampleModalLabel">حذف</h5>
+                    <div class="float-left">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <form action="/admin/categories/delete/1dw53ada51dawdad123dwadawdas?_method=DELETE" method="post">
+                    <%- csrf_filed() %>
+                    <div class="modal-body">
+                        <input type="hidden" name="category_id" id="category_id" value="">
+                        آیا از حذف این دسته بندی مطمعن هستید؟
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">بستن</button>
+                        <button type="submit" class="btn btn-danger mr-2">بله</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#categoryCourse').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget);
+            let category_id = button.data('categoryid');
+            let modal = $(this);
+            modal.find('.modal-body #category_id').val(category_id);
+        })
+    </script>
+</div>
+

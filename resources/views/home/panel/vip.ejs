@@ -1,0 +1,21 @@
+<%- include(viewPath('home/panel/head.ejs')) -%>
+<div class=" mt-4">
+
+    <form method="post" class="w-25" action="/user/panel/vip/payment">
+        <%- csrf_filed() %>
+        <label for="plan">
+            افزایش عضویت ویژه
+        </label>
+        <select name="plan" id="plan" class="form-control">
+            <option value="1">عضویت ویژه 1 ماه => 10000 تومان</option>
+            <option value="3">عضویت ویژه 3 ماه => 30000 تومان</option>
+            <option value="12">عضویت ویژه 12 ماه => 90000 تومان</option>
+        </select>
+        <button type="submit" class="btn btn-danger mt-2">
+            افزاییش اعتبار
+        </button>
+
+    </form>
+
+
+</div>

@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+    <h2>افزودن دسترسی</h2>
+</div>
+<form class="form-horizontal" action="/admin/role/create" method="post">
+    <%- csrf_filed() %>
+    <div class="form-group row">
+        <div class="col">
+            <label for="name" class="control-label font-weight-bold">عنوان مقام</label>
+            <input type="text" class="form-control <% if (errors('name')){ %> is-invalid <% } %>" name="name"
+                   id="name" placeholder="عنوان را وارد کنید"
+                   value="<%= old('name') %>">
+            <% if (errors('name')){ %>
+                <span class="invalid-feedback"><%- errors('name') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="label" class="control-label font-weight-bold">توضیحات مقام</label>
+            <input type="text" class="form-control <% if (errors('label')){ %> is-invalid <% } %>" name="label"
+                   id="label" placeholder="عنوان را وارد کنید"
+                   value="<%= old('label') %>">
+            <% if (errors('label')){ %>
+                <span class="invalid-feedback"><%- errors('label') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="permission" class="control-label font-weight-bold font-weight-bold">دسترسی برای مقام :</label>
+            <select name="permissions[]" multiple id="permission"
+                    class="form-control  <% if (errors('permissions')){ %> is-invalid <% } %>">
+                <% permissions.forEach(permission=>{ %>
+                    <option value="<%= permission.id %>"
+                            <%= old('permissions') === permission.id ? 'selected' : "" %> >
+                        <%= permission.name %></option>
+                <% }) %>
+            </select>
+            <% if (errors('permissions')){ %>
+                <span class="invalid-feedback"><%- errors('permissions') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <button type="submit" class="btn btn-primary">ثبت</button>
+        </div>
+    </div>
+</form>
+
+<link rel="stylesheet" href="/css/select2.min.css">
+<script src="/js/select2.min.js"></script>
+<script>
+    $('#permission').select2({
+        placeholder: 'انتخاب دسترسی',
+        dir: 'rtl',
+        multiple: true,
+    });
+    CKEDITOR.replace('body', {
+        filebrowserUploadUrl: "/admin/upload-image"
+    })
+</script>

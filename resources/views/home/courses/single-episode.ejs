@@ -1,0 +1,107 @@
+<div class="row  ">
+    <!-- Blog Post Content Column -->
+    <div class="col-lg-8 " style="display: inline-block">
+        <!-- Title -->
+        <h1 class="mb-3">
+            <%= episode.title %>
+        </h1>
+        <% if(auth.check){ %>
+            <% if(auth.user.checkLearning(episode.course.id) || auth.user.isVip(episode.course.id)) { %>
+                <video
+                        id="my-player"
+                        class="video-js col-lg-12"
+
+                        controls
+                        preload="auto"
+                        poster="<%= process.env.APP_URL + episode.course.thumb %>"
+                        data-setup='{}'>
+                    <source src="<%= episode.videoUrl %>" type="video/mp4"/>
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a
+                        web browser that
+                        <a href="https://videojs.com/html5-video-support/" target="_blank">
+                            supports HTML5 video
+                        </a>
+                    </p>
+                </video>
+        <% }} %>
+        <hr>
+        <!-- Post Content -->
+        <div id="content">
+            <%- episode.body %>
+        </div>
+        <hr>
+
+        <% if(auth.check) { %>
+            <% if(episode.course.type == 'vip' ) { if(!req.user.isVip()) { %>
+                <div class="alert alert-danger">برای مشاهده این دوره نیاز است عضویت ویژه را تهیه کنید</div>
+            <% } } else if(episode.course.type == 'cash' ) { if(!req.user.checkLearning(episode.course.id)) { %>
+                <div class="alert alert-danger">برای مشاهده این دوره نیاز است بصورت نقدی دوره راه تهیه کنید</div>
+            <% } else { %>
+                <div class="alert alert-success">شما در این دوره ثبت نام کرده اید</div>
+        <% } } } else { %>
+            <div class="alert alert-danger">برای مشاهده این قسمت نیاز است ابتدا وارد سایت شوید</div>
+        <% } %>
+
+        <h3>قسمت های دوره</h3>
+        <table class="table table-condensed table-bordered">
+            <thead>
+            <tr>
+                <th>شماره قسمت</th>
+                <th>عنوان قسمت</th>
+                <th>زمان قسمت</th>
+                <th>دانلود</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <% episode.course.episodes.forEach(episode=> { %>
+                <tr>
+                    <th>
+                        <%= episode.number %>
+                    </th>
+                    <td>
+                        <a href="<%= episode.path() %>">
+                            <%= episode.title %>
+                        </a>
+                    </td>
+                    <td>
+                        <%= episode.time %>
+                    </td>
+                    <td>
+                        <a href="<%= episode.download(req.isAuthenticated(),req.user) %>">دانلود</a>
+                    </td>
+                </tr>
+            <% }) %>
+
+            </tbody>
+        </table>
+        <!-- Blog Comments -->
+        <hr>
+        <!-- Comments Form -->
+        <%- include(viewPath('layouts/comment'),{subject: episode ,comments:episode.comment}) -%>
+    </div>
+
+    <!-- Blog Sidebar Widgets Column -->
+
+    <%- include('./sidebarCourse',{ course: episode.course }) -%>
+
+</div>
+<script>
+    const options = {};
+    const player = videojs('my-player', options, function onPlayerReady() {
+        videojs.log('Your player is ready!');
+        // In this context, `this` is the player that was created by Video.js.
+        this.play();
+        // How about an event listener?
+        this.on('ended', function () {
+            videojs.log('Awww...over so soon?!');
+        });
+    });
+</script>
+
+<style>
+    .col-lg-12 {
+        height: 350px;
+    }
+</style>

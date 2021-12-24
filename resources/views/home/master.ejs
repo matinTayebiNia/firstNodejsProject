@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- defineContent('title') || 'فروشگاه فایل' %></title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="/css/vazir.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/video-js.min.css">
+</head>
+
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark  bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">مجله آموزشی</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="ورود">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/episodes">دوره ها</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/abouteUs">درباره ما</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="d-flex text-md-left">
+                <div class="col">
+                    <% if(req.getLocale() === "en"){ %>
+                        <a href="/lang/fa" class="btn btn-sm btn-info">نمایش به زبان فارسی</a>
+                    <% } else if (req.getLocale() === "fa"){ %>
+                        <a href="/lang/en" class="btn btn-sm btn-info">نمایش به زبان انگلیسی</a>
+                    <% } %>
+                </div>
+                <% if (auth.check){ %>
+                    <!-- Example split danger button -->
+                    <div class="btn-group">
+                        <a href="/user/panel" class="btn btn-secondary"><%- auth.user.name %></a>
+                        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/user/panel">پنل کاربری</a>
+                            <div class="dropdown-divider"></div>
+                            <% if (auth.user.admin){ %>
+                                <a class="dropdown-item" href="/admin">پنل مدیریت </a>
+                                <div class="dropdown-divider"></div>
+                            <% } %>
+                            <button class="dropdown-item" data-toggle="modal"
+                                    data-target="#exampleModal">خروج
+                            </button>
+                        </div>
+                    </div>
+                <% }else{ %>
+                    <a href="/auth/login" class="btn btn-danger ml-1">ورود</a>
+                    <a href="/auth/register" class="btn btn-success">ثبت نام</a>
+                <% } %>
+            </div>
+            <form method="post" action="/logout" id="logout">
+
+            </form>
+        </div>
+    </nav>
+</header>
+<% if (auth.check){ %>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="color: red" id="exampleModalLabel">خروج حساب کاربری</h5>
+                    <div class="float-left">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    آیا مطمعن هستید؟!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">بستن</button>
+                    <a href="/logout" class="btn btn-danger mr-2">بله</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<% } %>
+<div class="container mt-5">
+    <%- body %>
+</div>
+
+
+<script src="/js/jquery-3.6.0.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/video.min.js"></script>
+<script src="/js/sweetalert2@11.js"></script>
+<script>
+    window.Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+</script>
+<% const sweetAlert = req.flash('sweetAlert')
+if (sweetAlert.length === 1){
+    let data = sweetAlert[0]
+%>
+<script>
+    <% if (data.toast){ %>
+    Toast.fire({
+        icon: '<%= data.iconInfo %>',
+        title: '<%= data.title %>'
+    })
+    <% } else { %>
+    Swal.fire({
+        toast: false,
+        icon: '<%= data.iconInfo %>',
+        title: '<%= data.title %>',
+        text: '<%= data.message %>',
+        showConfirmButton: <%= data.button !== null %>,
+        confirmButtonText: '<%= data.button %>',
+        timer: <%= data.button === null ? data.timer : 0 %>,
+        timerProgressBar: <%= !!data.timer %>,
+    })
+    <% } %>
+
+</script>
+<% } %>
+<%- script %>
+</body>
+
+</html>

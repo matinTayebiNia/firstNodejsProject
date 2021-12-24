@@ -1,0 +1,49 @@
+<div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+    <h2>اعمال سطح دسترسی</h2>
+</div>
+
+<form class="form-horizontal" action="/admin/users/<%= user.id %>/storeAddRole?_method=put" method="post">
+
+    <%- csrf_filed() %>
+    <div class="form-group row">
+        <div class="col">
+            <label for="name" class="control-label disabled font-weight-bold">نام و ایمیل کاربر</label>
+            <input type="text" class="form-control " name="name"
+                   id="name" placeholder="عنوان را وارد کنید"
+                   value="<%= user.name + ' - ' + user.email %>">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="roles" class="control-label font-weight-bold font-weight-bold">اعمال دسترسی</label>
+            <select name="roles" multiple id="roles"
+                    class="form-control  <% if (errors('roles')){ %> is-invalid <% } %>">
+                <% roles.forEach(role=>{ %>
+                    <option value="<%= role._id %>"
+                            <%= old('roles', user.roles).indexOf(role.id) !== -1 ? 'selected' : '' %> >
+                        <%= role.name + ' - ' + role.label %>
+                    </option>
+                <% }) %>
+            </select>
+            <% if (errors('roles')){ %>
+                <span class="invalid-feedback"><%= errors('roles') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <button type="submit" class="btn btn-info">ثبت</button>
+        </div>
+    </div>
+</form>
+
+<link rel="stylesheet" href="/css/select2.min.css">
+<script src="/js/select2.min.js"></script>
+<script>
+    $('#roles').select2({
+        placeholder: 'انتخاب دسترسی',
+        dir: 'rtl',
+        multiple: true,
+    });
+
+</script>

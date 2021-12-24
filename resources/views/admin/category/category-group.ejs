@@ -1,0 +1,38 @@
+<ul class="list-group list-group-flush">
+    <% categories.map(category => { %>
+        <li class="list-group-item">
+            <div class="d-flex">
+                <span><%= category.name %></span>
+                <div class="actions mr-2">
+                    <% if (can('delete-categories')){ %>
+                        <form method="post" id="cate-<%= category.id %>-delete"
+                              action="/admin/categories/delete/<%= category.id %>?_method=delete">
+                            <input type="hidden" name="category_id" value="<%= category.id %>">
+                        </form>
+                        <a href="#"
+                           onclick="let result=confirm('ایا از حذف دسته بر مورد نظر مطمعن هستید؟');
+                                   if (result){event.preventDefault();document.getElementById('cate-<%= category.id %>-delete').submit()}"
+                           class="badge badge-danger">حذف</a>
+                    <% } %>
+                    <% if (can('edit-categories')){ %>
+                        <a href="/admin/categories/<%= category.id %>/edit"
+                           class="badge badge-warning">ویرایش</a>
+                    <% } %>
+                </div>
+            </div>
+            <% if(category.chileCategory){ %>
+                <%- include('./category-group',{categories:category.chileCategory}) -%>
+            <% } %>
+        </li>
+    <% }); %>
+</ul>
+
+
+<style>
+    li.list-group-item > ul.list-group {
+        margin-top: 10px;
+        margin-right: 20px;
+    }
+</style>
+
+

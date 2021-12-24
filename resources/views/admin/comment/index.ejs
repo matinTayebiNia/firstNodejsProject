@@ -1,0 +1,105 @@
+<div class="d-flex justify-content-between align-items-center mb-3 border-bottom-1">
+    <h2>نظرات</h2>
+    <div class="btn-group">
+        <% if (can('show-comments')){ %>
+            <a href="/admin/comments" class="btn btn-sm btn-primary">نظرات تایید شده</a>
+            <a href="/admin/comments?approved=false" class="btn btn-sm btn-danger">نظرات تایید نشده</a>
+        <% } %>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th> نام ارسال کننده</th>
+            <th>مطلب مورد نظر</th>
+            <th>وضعیت نظر</th>
+            <th>مطلب مورد نظر</th>
+            <th>تنظیمات</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% comments.docs.map(comment => { %>
+
+            <tr>
+                <td>
+                    <%= comment.user.name %>
+                </td>
+                <td>
+                    <%= comment.comment %>
+                </td>
+                <td>
+                    <%- comment.IsApproved() %>
+                </td>
+                <td>
+                    <a href="<%= comment.getSubjectTitles().url %>">
+                        <%= comment.getSubjectTitles().subject.title %>
+                    </a>
+                </td>
+                <td>
+                    <div class="d-flex ">
+                        <% if (!comment.approved){ %>
+                            <% if(can('edit-comments')){ %>
+                                <form method="post" action="/admin/comments/update/<%= comment._id %>?_method=put">
+                                    <%- csrf_filed() %>
+                                    <button type="submit" class="btn btn-sm btn-success">تایید</button>
+                                </form>
+                            <% } %>
+                        <% } %>
+                        <% if(can('delete-comments')){ %>
+                            <button data-toggle="modal" data-commentid="<%- comment._id %>"
+                                    data-target="#deleteComment"
+                                    class="btn btn-sm btn-danger mr-1">حذف
+                            </button>
+                        <% } %>
+                    </div>
+                </td>
+            </tr>
+        <% }) %>
+
+        </tbody>
+    </table>
+
+
+    <%- include(viewPath('layouts/pagination'),{pagination:comments}) %>
+
+    <div class="modal fade" id="deleteComment" tabindex="-1" role="dialog" aria-labelledby="deleteCourseLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" style="color: red" id="exampleModalLabel">حذف</h5>
+                    <div class="float-left">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <form action="/admin/comments/delete/1dw53ada51dawdad123dwadawdas?_method=DELETE" method="post">
+                    <%- csrf_filed() %>
+                    <div class="modal-body">
+                        <input type="hidden" name="comment_id" id="comment_id" value="">
+                        آیا از حذف این دوره مطمعن هستید؟
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">بستن</button>
+                        <button type="submit" class="btn btn-danger mr-2">بله</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $('#deleteComment').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget);
+            let comment_id = button.data('commentid');
+            let modal = $(this);
+            modal.find('.modal-body #comment_id').val(comment_id);
+        })
+    </script>
+</div>
+

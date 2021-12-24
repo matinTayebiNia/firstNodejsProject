@@ -1,0 +1,46 @@
+<%- include(viewPath('home/panel/head.ejs')) -%>
+<hr class="mb-2">
+
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>ردیف</th>
+        <th> ایمیل خریدار</th>
+        <th>سفارش</th>
+        <th>هزینه پرداخت</th>
+        <th> شماره پیگیری</th>
+        <th>وضعیت پرداخت</th>
+        <th>تاریخ ثبت</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% orders.docs.forEach((order, index)=>{ %>
+        <tr>
+            <th>
+                <%= new Intl.NumberFormat('fa').format(index + 1); %>
+            </th>
+            <th>
+                <%= order.user.email %>
+            </th>
+            <td>
+                <%= order.vip ? 'خریداری عضویت ویژه' : order.course.title %>
+            </td>
+            <td>
+                <%= new Intl.NumberFormat('fa').format(order.amount); %> تومان
+            </td>
+            <td>
+                <%= order.clientRefId %>
+            </td>
+            <td>
+                <%- order.StatusPayment() %>
+            </td>
+            <td>
+                <%= PersianDate(order.updatedAt).format('jD jMMMM jYYYY') %>
+            </td>
+        </tr>
+    <% }) %>
+    </tbody>
+</table>
+
+
+<%- include(viewPath('layouts/pagination'),{pagination:orders}) %>

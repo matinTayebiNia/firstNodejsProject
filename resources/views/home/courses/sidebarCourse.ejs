@@ -1,0 +1,90 @@
+<div class="col-md-4 ">
+    <% if(auth.check) { %>
+        <% if(course.type == 'vip' ) { if(!req.user.isVip(course.id)) { %>
+            <div class="card my-4">
+                <div class="card-body ">
+                    <p>برای مشاهده این دوره نیاز است عضویت ویژه را تهیه کنید یا به صورت نقدی دوره را تهیه کنید.</p>
+                    <p> مبلغ دوره: <%= new Intl.NumberFormat().format(course.price) %> تومان </p>
+                    <form action="/course/payment" method="post">
+                        <%- csrf_filed() %>
+                        <input type="hidden" name="course_id" value="<%= course._id %>">
+                        <button type="submit" class="btn btn-success">خرید دوره</button>
+                    </form>
+                </div>
+            </div>
+        <% }else{ %>
+            <% if (req.user.learning.push(course.id) !== -1){ %>
+                <div class="alert alert-success">شما برای همیشه به این دوره دسترسی دارید</div>
+            <% }else{ %>
+                <div class="alert alert-success">تا زمانی که عضویت ویژه شما تمام نشده شما به این دوره دسترسی دارید</div>
+
+        <% } }} else if(course.type == 'cash' ) { if(!auth.user.checkLearning(course.id)) { %>
+            <div class="card my-4">
+                <div class="card-body ">
+                    <p>برای مشاهده این دوره نیاز است بصورت نقدی دوره راه تهیه کنید</p>
+                    <p> مبلغ دوره: <%= new Intl.NumberFormat().format(course.price) %> تومان </p>
+                    <form action="/course/payment" method="post">
+                        <%- csrf_filed() %>
+                        <input type="hidden" name="course_id" value="<%= course._id %>">
+                        <button type="submit" class="btn btn-success">خرید دوره</button>
+                    </form>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="alert alert-success">شما برای همیشه به این دوره دسترسی دارید</div>
+    <% } } } else { %>
+        <div class="card my-4">
+            <div class="card-body ">
+                <p>
+                    <a href="/auth/login" class="btn btn-link " style="margin-right: -25px">
+                        برای مشاهده این دوره نیاز است ابتدا وارد سایت شوید
+                    </a>
+                </p>
+            </div>
+        </div>
+
+    <% } %>
+    <!-- Search Widget -->
+    <div class="card my-4">
+        <h5 class="card-header">جستجو</h5>
+        <div class="card-body">
+            <form method="get" action="/episodes" class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="دنبال چی میگردی ؟">
+                <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="submit">جستجو!</button>
+                    </span>
+            </form>
+        </div>
+    </div>
+
+    <!-- Categories Widget -->
+    <div class="card my-4">
+        <h5 class="card-header">دسته بندی ها</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <ul class="list-unstyled pr-0">
+                        <% categories.forEach(category=>{ %>
+                            <li>
+                                <a href="/episodes?category=<%= category.slug %>"><%= category.name %></a>
+                                <% if(category.chileCategory){ %>
+                                    <ul class="list-unstyled mb-0">
+                                        <% category.chileCategory.forEach(cat=>{ %>
+                                            <li>
+                                                <a href="/episodes?category=<%= cat.slug %>">
+                                                    <%= cat.name %>
+                                                </a>
+                                            </li>
+                                        <% }) %>
+                                    </ul>
+                                <% } %>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

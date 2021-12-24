@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+    <h2>ایجاد کاربر</h2>
+</div>
+<form class="form-horizontal" action="/admin/users/create" method="post">
+    <%- csrf_filed() %>
+
+    <div class="form-group row">
+        <div class="col">
+            <label for="fullName" class="control-label font-weight-bold">نام کاربر </label>
+            <input type="text" class="form-control <% if (errors('fullName')){ %> is-invalid <% } %>" name="fullName"
+                   id="fullName" placeholder="نام کاربری"
+                   value="<%- old('fullName') %>">
+            <% if (errors('fullName')){ %>
+                <span class="invalid-feedback"><%= errors('fullName') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="email" class="control-label font-weight-bold">ایمیل </label>
+            <input type="email" class="form-control <% if (errors('email')){ %> is-invalid <% } %>" name="email"
+                   id="email" placeholder="نام کاربری"
+                   value="<%- old('email') %>">
+            <% if (errors('email')){ %>
+                <span class="invalid-feedback"><%= errors('email') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="admin" class="control-label font-weight-bold font-weight-bold">نوع کاربر</label>
+            <select name="admin" id="admin" class="form-control  <% if (errors('admin')){ %> is-invalid <% } %>">
+                <option value="true" <%= old('admin') === 'true' ? 'selected' : '' %> >ادمین</option>
+                <option value="false" <%= old('admin') === 'false' ? 'selected' : '' %> >کاربر معمولی</option>
+            </select>
+            <% if (errors('admin')){ %>
+                <span class="invalid-feedback"><%= errors('admin') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="password" class="control-label font-weight-bold">رمز عبور</label>
+            <input type="password" class="form-control <% if (errors('password')){ %> is-invalid <% } %>"
+                   name="password"
+                   id="password" placeholder="رمز عبور"
+                   value="<%= old('password') %>">
+            <% if (errors('password')){ %>
+                <span class="invalid-feedback"><%= errors('password') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label for="confrimPassword" class="control-label font-weight-bold"> تکرار رمز عبور</label>
+            <input type="password" class="form-control <% if (errors('confrimPassword')){ %> is-invalid <% } %>"
+                   name="confrimPassword"
+                   id="confrimPassword" placeholder="رمز عبور"
+                   value="<%= old('confrimPassword') %>">
+            <% if (errors('confrimPassword')){ %>
+                <span class="invalid-feedback"><%= errors('confrimPassword') %> </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <button type="submit" class="btn btn-primary">ثبت نام</button>
+        </div>
+    </div>
+</form>

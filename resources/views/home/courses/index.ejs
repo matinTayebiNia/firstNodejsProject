@@ -1,0 +1,89 @@
+<div class="row  ">
+    <!-- Blog Post Content Column -->
+    <div class="col-lg-8 " style="display: inline-block">
+        <!-- Title -->
+        <h1 class="mb-3">
+            <%= course.title %>
+        </h1>
+
+        <%
+        let cat = [];
+        course.categories.forEach(category => {
+            cat += category.name + " , ";
+        })
+        %>
+
+        <!-- Author -->
+        <p class="text-muted small">
+            <span> توسط <a href="#">
+                    <%= course.user.name %>
+                </a></span>
+            -
+            <span>ثبت شده در تاریخ: <%= PersianDate(course.createdAt).format('jD jMMMM jYYYY') %>  </span>
+        </p>
+
+        <hr>
+        <!-- Post Content -->
+        <div id="content">
+            <%- course.body %>
+        </div>
+        <hr>
+
+        <% if(auth.check) { %>
+            <% if(course.type == 'vip' ) { if(!auth.user.isVip(course.id)) { %>
+                <div class="alert alert-danger"> برای مشاهده این دوره نیاز است عضویت ویژه را تهیه کنید یا به صورت نقدی
+                    دوره را تهیه کنید.
+                </div>
+            <% } } else if(course.type == 'cash' ) { if(!auth.user.checkLearning(course.id)) { %>
+                <div class="alert alert-danger">برای مشاهده این دوره نیاز است بصورت نقدی دوره راه تهیه کنید</div>
+            <% } else { %>
+                <div class="alert alert-success">شما در این دوره ثبت نام کرده اید</div>
+        <% } } } else { %>
+            <div class="alert alert-danger">برای مشاهده این دوره نیاز است ابتدا وارد سایت شوید</div>
+        <% } %>
+
+        <h3>قسمت های دوره</h3>
+        <table class="table table-condensed table-bordered">
+            <thead>
+            <tr>
+                <th>شماره قسمت</th>
+                <th>عنوان قسمت</th>
+                <th>زمان قسمت</th>
+                <th>دانلود</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <% course.episodes.forEach(episode=> { %>
+                <tr>
+                    <th>
+                        <%= episode.number %>
+                    </th>
+                    <td>
+                        <a href="<%= episode.path() %>">
+                            <%= episode.title %>
+                        </a>
+                    </td>
+                    <td>
+                        <%= episode.time %>
+                    </td>
+                    <td>
+                        <a href="<%= episode.download(req.isAuthenticated(), req.user) %>">دانلود</a>
+                    </td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+        <span class="small text-muted"> دسته بندی :<%= cat %></span>
+        <!-- Blog Comments -->
+        <hr>
+        <!-- Comments Form -->
+        <%- include(viewPath('layouts/comment'),{subject: course ,comments:course.comment}) -%>
+    </div>
+
+    <!-- Blog Sidebar Widgets Column -->
+
+    <%- include('./sidebarCourse') -%>
+
+
+</div>

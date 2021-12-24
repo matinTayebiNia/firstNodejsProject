@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="row pt-3 justify-content-center">
+        <div class="col-8">
+            <div class="card card-defult">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>ورود</h5>
+                    </div>
+                    <div class="card-body">
+                        <% if (errors('failedLogin')){ %>
+                            <div class="alert alert-danger">
+                                <%- errors('failedLogin') %>
+                            </div>
+                        <% } %>
+                        <form action="/auth/login" method="post" class="form-horizontal">
+                            <%- csrf_filed() %>
+
+                            <div class="form-group">
+                                <label for="email">ایمیل</label>
+                                <input id="email"
+                                       class="form-control <% if (errors('email')){ %> is-invalid <% } %> "
+                                       value="<%- old('email') %> "
+                                       placeholder="ایمیل خود را وارد کنید"
+                                       type="email" name="email">
+                                <% if (errors('email')){ %>
+                                    <span class="invalid-feedback">
+                                    <%- errors('email') %>
+                                    </span>
+                                <% } %>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">رمز عبور</label>
+                                <input id="password"
+                                       class="form-control <% if (errors('password')){ %> is-invalid <% } %>"
+                                       type="password" name="password"
+                                       placeholder="رمز عبور">
+                                <% if (errors('password')){ %>
+                                    <span class="invalid-feedback">
+                                    <%- errors('password') %>
+                                    </span>
+                                <% } %>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <input type="checkbox" name="remember" id="remember">
+                                    <label for="remember">من را بخاطر بسپار</label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <%- recaptcha %>
+                                <% if (errors('recaptcha')){ %>
+                                    <span class="text-sm-right text-danger">
+                                    <%- errors('recaptcha') %>
+                                    </span>
+                                <% } %>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">
+                                    ورود
+                                </button>
+                                <a href="/auth/google" class="btn btn-danger">ورود اکانت گوگل</a>
+                                <a href="/auth/password/reset" class="btn btn-link">
+                                    فراموشی رمز عبور
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

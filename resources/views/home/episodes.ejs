@@ -1,0 +1,83 @@
+<main>
+    <section class="py-5  container">
+        <!-- Jumbotron Header -->
+        <header class="jumbotron hero-spacer">
+            <h1>مجله آموزشی </h1>
+            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و
+                متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و
+                کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده
+                شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی
+                الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد.</p>
+        </header>
+
+        <%
+        let {search, type, order, category} = req.query
+        %>
+        <div class="row mb-3">
+            <div class="col-lg-12">
+                <h3>آخرین دوره ها</h3>
+                <div class="col-3">
+                    <form action="/episodes<%= search ? "?search=" : "" || type ? "?type=" : '' || order ? "?order=" : "" || category ? "?category=" : '' %>"
+                          method="get">
+                        <div class="form-group">
+                            <% if(search){ %>
+                                <smal class="text-muted">
+                                    <input type="hidden" name="search" value="<%= search %>">
+                                    عبارت جستجو شده:<%= search %>
+                                </smal>
+                                <a href="/episodes" class="btn btn-dark"> حذف</a>
+                            <% } %>
+                        </div>
+                        <div class="form-group">
+                            <select name="type" class="form-control  mb-2">
+                                <option value="all" <%= type === 'all' ? 'selected' : '' %>>همه دوره ها
+                                </option>
+                                <option value="vip" <%= type === 'vip' ? 'selected' : '' %> >اعضای ویژه
+                                </option>
+                                <option value="cash"<%= type === 'cash' ? 'selected' : '' %> >نقدی</option>
+                                <option value="free" <%= type === 'free' ? 'selected' : '' %> >رایگان</option>
+                            </select>
+                            <select name="category" class="form-control  mb-2">
+                                <option value="all">همه دسته ها</option>
+                                <% categories.map(cat=>{ %>
+                                    <option value="<%= cat.slug %>" <%= cat.slug === category ? "selected" : "" %>>
+                                        <%= cat.name %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                            <div class=" form-group form-check   ">
+                                <input type="checkbox" <%= order === '1' ? 'checked' : '' %> value="1"
+                                       name="order" id="sortOfEnd" class="form-check-input">
+                                <label for="sortOfEnd" class="form-check-label mr-3">از اول به اخر</label>
+                            </div>
+                            <button type="submit" class="btn btn-danger ">فیلتر</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <% if(courses.length){ %>
+            <div class="row">
+                <% courses.forEach(course => { %>
+                    <div class="col-6 col-md-3">
+                        <div class="card">
+                            <img class="card-img-top img-fluid h-50" src="<%= course.thumb %>"
+                                 alt="<%= course.title %>">
+                            <div class="card-body">
+                                <h3><a href="<%= course.path() %>"><%= course.title %></a></h3>
+                                <p class="card-text"><%= course.body.substr(0, 100) %></p>
+                                <a href="<%= course.path() %>" class="btn btn-primary btn-sm">اطلاعات بیشتر</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <%= course.viewCount %> بازدید
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% }else{ %>
+            <div class="alert alert-warning text-lg-center font-weight-bold "> دوره ای یافت نشد</div>
+        <% } %>
+
+</main>

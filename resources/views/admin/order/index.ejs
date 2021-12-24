@@ -1,0 +1,96 @@
+<div class="d-flex justify-content-between align-items-center mb-3 border-bottom-1">
+    <h2>دوره ها</h2>
+    <div class="btn-group">
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th> ایمیل خریدار</th>
+                <th>سفارش</th>
+                <th>هزینه پرداخت</th>
+                <th> شماره پیگیری</th>
+                <th>وضعیت پرداخت</th>
+                <th>تاریخ ثبت</th>
+                <th>تنظیمات</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% orders.docs.map(order=> { %>
+
+                <tr>
+                    <td>
+                        <%= order.user.email %>
+                    </td>
+                    <td>
+                        <%= order.vip ? 'خریداری عضویت ویژه' : order.course.title %>
+                    </td>
+                    <td>
+                        <%= new Intl.NumberFormat('fa').format(order.amount); %> تومان
+                    </td>
+                    <td>
+                        <%= order.clientRefId %>
+                    </td>
+
+                    <td>
+                        <%- order.StatusPayment() %>
+                    </td>
+                    <td>
+                        <%= PersianDate(order.updatedAt).format('jD jMMMM jYYYY') %>
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <button data-toggle="modal" data-orderid="<%= order._id %>" data-target="#deleteOrder"
+                                class="btn btn-danger">حذف
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <% }) %>
+
+        </tbody>
+    </table>
+
+
+    <%- include(viewPath('layouts/pagination'),{pagination:orders}) %>
+
+        <div class="modal fade" id="deleteOrder" tabindex="-1" role="dialog" aria-labelledby="deleteCourseLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="color: red" id="exampleModalLabel">حذف</h5>
+                        <div class="float-left">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <form action="/admin/order/delete/1dw53ada51dawdad123dwadawdas?_method=DELETE" method="post">
+                        <%- csrf_filed() %>
+                        <div class="modal-body">
+                            <input type="hidden" name="order_id" id="order_id" value="">
+                            آیا از حذف این سفارش مطمعن هستید؟
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-dismiss="modal">بستن</button>
+                            <button type="submit" class="btn btn-danger mr-2">بله</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            $('#deleteOrder').on('show.bs.modal', function (event) {
+                let button = $(event.relatedTarget);
+                let order_id = button.data('orderid');
+                let modal = $(this);
+                modal.find('.modal-body #order_id').val(order_id);
+            })
+        </script>
+</div>

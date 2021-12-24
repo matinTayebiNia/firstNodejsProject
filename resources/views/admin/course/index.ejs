@@ -1,0 +1,107 @@
+<div class="d-flex justify-content-between align-items-center mb-3 border-bottom-1">
+    <h2>دوره ها</h2>
+    <div class="btn-group">
+        <% if (can('create-course')){ %>
+            <a href="/admin/course/create" class="btn btn-sm btn-primary">ایجاد دوره جدید</a>
+        <% } %>
+        <% if (can('show-episode')){ %>
+            <a href="/admin/episode" class="btn btn-sm btn-danger">بخش ویدیوها</a>
+        <% } %>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>عنوان دوره</th>
+            <th>تعداد نظرات</th>
+            <th>مقدار بازدید</th>
+            <!--            <th>تعد شرکت کننده ها</th>-->
+            <th>وضعیت دوره</th>
+            <th>عکس دوره</th>
+            <th>تنظیمات</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% courses.docs.map(course => { %>
+
+            <tr>
+                <td><a href="<%= course.path() %>">
+                        <%= course.title %>
+                    </a></td>
+                <td>
+                    <%= course.CommentCount %>
+                </td>
+                <td>
+                    <%= course.viewCount %>
+                </td>
+                <!--                <td>آموزش پروژه محور bootstrap 4</td>-->
+                <td>
+                    <%- course.typeToPersian() %>
+                </td>
+                <td>
+                    <img class="rounded mx-auto d-block w-25" src="<%- process.env.APP_URL + course.thumb %>"
+                         alt="<%= course.title %>">
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <% if (can('edit-course')){ %>
+                            <a href="/admin/course/<%= course._id %>/edit" class="btn btn-primary">ویرایش</a>
+                        <% } %>
+                        <% if (can('delete-course')){ %>
+                            <button data-toggle="modal" data-courseid="<%= course._id %>"
+                                    data-target="#deleteCourse"
+                                    class="btn btn-danger">حذف
+                            </button>
+                        <% } %>
+                    </div>
+                </td>
+            </tr>
+        <% }) %>
+
+        </tbody>
+    </table>
+
+
+    <%- include(viewPath('layouts/pagination'),{pagination:courses}) %>
+
+    <div class="modal fade" id="deleteCourse" tabindex="-1" role="dialog" aria-labelledby="deleteCourseLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" style="color: red" id="exampleModalLabel">حذف</h5>
+                    <div class="float-left">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <form action="/admin/course/delete/1dw53ada51dawdad123dwadawdas?_method=DELETE" method="post">
+                    <%- csrf_filed() %>
+                    <div class="modal-body">
+                        <input type="hidden" name="course_id" id="course_id" value="">
+                        آیا از حذف این دوره مطمعن هستید؟
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">بستن</button>
+                        <button type="submit" class="btn btn-danger mr-2">بله</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $('#deleteCourse').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget);
+            let course_id = button.data('courseid');
+            let modal = $(this);
+            modal.find('.modal-body #course_id').val(course_id);
+        })
+    </script>
+</div>
+

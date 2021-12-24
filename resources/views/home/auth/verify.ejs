@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row pt-3 justify-content-center">
+        <div class="col-8">
+            <div class="card card-default">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>برای استفاده از امکانات داشبور لطفا ایمیل خود را تایید کنید.</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="/user/verify/resend" method="post">
+                            <%- csrf_filed() %>
+                            <input type="submit" value="ارسال دوباره تایید ایمیل" class="btn btn-primary btn-block">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

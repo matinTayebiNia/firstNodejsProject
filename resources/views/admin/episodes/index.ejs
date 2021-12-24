@@ -1,0 +1,105 @@
+<div class="d-flex justify-content-between align-items-center mb-3 border-bottom-1">
+    <h2>ویدیوها</h2>
+    <div class="btn-group">
+        <% if (can('create-episode')){ %>
+            <a href="/admin/episode/create" class="btn btn-sm btn-primary">ایجاد ویدیو جدید</a>
+        <% } %>
+        <% if (can('show-course')){ %>
+            <a href="/admin/course" class="btn btn-sm btn-danger">بخش دوره ها</a>
+        <% } %>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>عنوان ویدیو</th>
+            <th>تعداد نظرات</th>
+            <th>تعداد دانلود</th>
+            <th>مقدار بازدید</th>
+            <!--            <th>تعد شرکت کننده ها</th>-->
+            <th>وضعیت ویدیو</th>
+            <th>تنظیمات</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% episodes.docs.map(episode => { %>
+
+            <tr>
+                <td><a href="<%= episode.path() %>">
+                        <%= episode.title %>
+                    </a></td>
+                <td>
+                    <%= episode.CommentCount %>
+                </td>
+                <td>
+                    <%= episode.downloadCount %>
+                </td>
+                <td>
+                    <%= episode.viewCount %>
+                </td>
+                <td>
+                    <%- episode.typeToPersian() %>
+                </td>
+                <!--                <td>آموزش پروژه محور bootstrap 4</td>-->
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <% if (can('edit-episode')){ %>
+                            <a href="/admin/episode/<%- episode._id %>/edit" class="btn btn-primary">ویرایش</a>
+                        <% } %>
+                        <% if (can('delete-episode')){ %>
+                            <button data-toggle="modal" data-episodeid="<%- episode._id %>"
+                                    data-target="#deleteCourse"
+                                    class="btn btn-danger">حذف
+                            </button>
+                        <% } %>
+                    </div>
+                </td>
+            </tr>
+        <% }) %>
+
+        </tbody>
+    </table>
+
+
+    <%- include(viewPath('layouts/pagination'),{pagination:episodes}) %>
+
+    <div class="modal fade" id="deleteCourse" tabindex="-1" role="dialog" aria-labelledby="deleteCourseLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" style="color: red" id="exampleModalLabel">حذف</h5>
+                    <div class="float-left">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <form action="/admin/episode/delete/1dw53ada51dawdad123dwadawdas?_method=DELETE" method="post">
+                    <%- csrf_filed() %>
+                    <div class="modal-body">
+                        <input type="hidden" name="episode_id" id="episode_id" value="">
+                        آیا از حذف این ویدیو مطمعن هستید؟
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">بستن</button>
+                        <button type="submit" class="btn btn-danger mr-2">بله</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $('#deleteCourse').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget);
+            let episode_id = button.data('episodeid');
+            let modal = $(this);
+            modal.find('.modal-body #episode_id').val(episode_id);
+        })
+    </script>
+</div>
+

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="نمایشport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        <%- defineContent('title') || 'پنل مدیریت' %>
+    </title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="/css/vazir.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">مجله آموزشی </a>
+        <input name="search" class="form-control form-control-dark w-100" type="text" placeholder="جستجو"
+            aria-label="Search">
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" data-toggle="modal" data-target="#exampleModal" href="#">خروج</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <main role="main" class="col-md-9 mr-sm-auto col-lg-10 pt-3 px-4">
+                <%- body %>
+            </main>
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <span data-feather="home"></span>
+                                داشبورد
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/orders">
+                                <span data-feather="file"> </span>
+                                سفارشات
+                            </a>
+                        </li>
+                        <% if (can('show-course')){ %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/course">
+                                    <span data-feather="shopping-cart"> </span>
+                                    دورها
+                                </a>
+                            </li>
+                            <% } %>
+                                <% if (can('show-user')){ %>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/admin/users">
+                                            <span data-feather="users"> </span>
+                                            کاربران
+                                        </a>
+                                    </li>
+                                    <% } %>
+                                        <% if(can('show-permission')){ %>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/admin/permission">
+                                                    <span data-feather="users"> </span>
+                                                    سطح دسترسی
+                                                </a>
+                                            </li>
+                                            <% } %>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#">
+                                                        <span data-feather="bar-chart-2"></span>
+                                                        گزارشات
+                                                    </a>
+                                                </li>
+                                                <% if (can('show-comments')){ %>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="/admin/comments">
+                                                            <span data-feather="layers"> </span>
+                                                            نظرات
+                                                        </a>
+                                                    </li>
+                                                    <% } %>
+                                                        <% if (can('show-categories')){ %>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="/admin/categories">
+                                                                    <span data-feather="layers"></span>
+                                                                    دسته بندی ها
+                                                                </a>
+                                                            </li>
+                                                            <% } %>
+                    </ul>
+
+                    <h6
+                        class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>گزارشات ذخیره شده</span>
+                        <a class="d-flex align-items-center text-muted" href="#">
+                            <span data-feather="plus-circle"></span>
+                        </a>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                این ماه
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                ماه گذشته
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                شبکه های اجتماعی
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                فروش سالانه
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="color: red" id="exampleModalLabel">خروج حساب کاربری</h5>
+                    <div class="float-left">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    آیا مطمعن هستید؟!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">بستن</button>
+                    <a href="/logout" class="btn btn-danger mr-2">بله</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <script src="/js/holder.min.js"></script>
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace()
+    </script>
+    <script src="/js/sweetalert2@11.js"></script>
+    <script>
+        window.Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+    </script>
+
+    <% const sweetAlert=req.flash('sweetAlert'); if (sweetAlert.length){ let data=sweetAlert[0]; console.log(data) %>
+        <script>
+
+                <%  if (data.toast) { %>
+                    Toast.fire({
+                        icon: '<%= data.iconInfo %>',
+                        title: '<%= data.title %>'
+                    })
+                    <% } else { %>
+                        Swal.fire({
+                            icon: '<%= data.iconInfo %>',
+                            title: '<%= data.title %>',
+                            text: '<%= data.message %>',
+                            showConfirmButton: <%= data.button !== null %>,
+                            confirmButtonText: '<%= data.button %>',
+                            timer: <%= data.button === null ? data.timer : 0 %>,
+                            timerProgressBar: <%= !!data.timer %>,
+    })
+    <% } %>
+        </script>
+        <% } %>
+            <%- script %>
+
+</body>
+
+</html>
