@@ -4,11 +4,6 @@ const Category = require('app/models/category')
 class categoryController extends controller {
 
     async index(req, res, next) {
-        const option = {
-            page: req.query.page || 1,
-            limit: 10,
-            sort: {createdAt: -1},
-        }
         const categoriesAggregate = await this.getChileCategory()
         let categories = []
 
