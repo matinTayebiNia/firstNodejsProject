@@ -23,7 +23,7 @@ module.exports = class Helpers {
             PersianDate: this.PersianDate,
             req: this.req,
             can: this.Authorized,
-            csrf_filed: this.csrfFiled
+            csrf_filed: this.csrfFiled,
         }
     }
 
@@ -82,4 +82,5 @@ module.exports = class Helpers {
     PersianDate(date) {
         return momentJalaali(date)
     }
+
 }

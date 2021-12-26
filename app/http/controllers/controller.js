@@ -4,6 +4,7 @@ const {validationResult} = require('express-validator/check')
 const isMongoId = require('validator/lib/isMongoId');
 const sprintf = require('sprintf-js').sprintf;
 const Bcrypt = require('bcrypt');
+const Category = require('app/models/category')
 
 
 module.exports = class controller {
@@ -11,6 +12,48 @@ module.exports = class controller {
         autoBind(this);
         this.recaptchaConfig();
     }
+
+    list_to_tree(list) {
+        let node2;
+        let map = {}, node, roots = [], i;
+        for (i = 0; i < list.length; i += 1) {
+            map[list[i]._id] = i;
+            list[i].children = [];
+        }
+        for (i = 0; i < list.length; i += 1) {
+            node = list[i];
+            if (node.parent !== null && map[node.parent] !== undefined) {
+                node2 = {         //Because i need only _id,Title & childrens
+                    _id: node._id,
+                    name: node.name,
+                    children: node.children
+                };
+                list[map[node.parent]].children.push(node2); //You can push direct "node"
+            } else {
+                node2 = {
+                    _id: node._id,
+                    name: node.name,
+                    children: node.children
+                };
+                roots.push(node2);
+            }
+        }
+        return roots;
+    }
+
+
+    getChileCategory() {
+        return Category.aggregate().match({parent: null})
+            .graphLookup(
+                {
+                    from: 'categories',
+                    startWith: '$_id',
+                    connectFromField: '_id',
+                    connectToField: 'parent',
+                    as: 'childCategory',
+                })
+    }
+
 
     recaptchaConfig() {
         this.recaptcha = new Recaptcha(

@@ -9,41 +9,41 @@
 
 <div class="card-body table-responsive p-0">
     <ul class="list-group list-group-flush">
-        <% categories.docs.map(category => { %>
+        <% categories.map(category => { %>
             <li class="list-group-item">
                 <div class="d-flex">
                     <span><%= category.name %></span>
                     <div class="actions mr-2">
                         <% if (can('delete-categories')){ %>
-                            <form method="post" id="cate-<%= category.id %>-delete"
-                                  action="/admin/categories/delete/<%= category.id %>?_method=delete">
-                                <%- csrf_filed() %>
-                                <input type="hidden" name="category_id" value="<%= category.id %>">
+                            <form method="post" id="cate-<%= category._id %>-delete"
+                                  action="/admin/categories/delete/<%= category._id %>?_method=delete&_csrf=<%= req.csrfToken() %>">
+
+                                <input type="hidden" name="category_id" value="<%= category._id %>">
                             </form>
                             <a href="#"
                                onclick="let result=confirm('ایا از حذف دسته بر مورد نظر مطمعن هستید؟');
-                                       if (result){event.preventDefault();document.getElementById('cate-<%= category.id %>-delete').submit()}"
+                                       if (result){event.preventDefault();document.getElementById('cate-<%= category._id %>-delete').submit()}"
                                class="badge badge-danger">حذف</a>
                         <% } %>
                         <% if (can('edit-categories')){ %>
-                            <a href="/admin/categories/<%= category.id %>/edit"
+                            <a href="/admin/categories/<%= category._id %>/edit"
                                class="badge badge-warning">ویرایش</a>
                         <% } %>
                         <% if (can('create-categories')){ %>
-                            <a href="/admin/categories/create?parent=<%= category.id %>"
+                            <a href="/admin/categories/create?parent=<%= category._id %>"
                                class="badge badge-primary">افزودن زیر دسته</a>
                         <% } %>
                     </div>
                 </div>
             </li>
-            <% if(category.chileCategory){ %>
-                <%- include('./category-group',{categories:category.chileCategory}) -%>
+            <% if(category.children.length > 0){ %>
+
+                <%- include('./category-group',{categories:category.children}) -%>
             <% } %>
         <% }); %>
 
     </ul>
 
-    <%- include(viewPath('layouts/pagination'),{pagination:categories}) %>
 
     <div class="modal fade" id="deleteCourse" tabindex="-1" role="dialog" aria-labelledby="deleteCourseLabel"
          aria-hidden="true">

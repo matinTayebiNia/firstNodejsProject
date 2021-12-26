@@ -8,19 +8,27 @@ class categoryController extends controller {
             page: req.query.page || 1,
             limit: 10,
             sort: {createdAt: -1},
-            populate: {path: "chileCategory"}
         }
-        const categories = await Category.paginate({parent: null}, option)
+        const categoriesAggregate = await this.getChileCategory()
+        let categories = []
+
+        categoriesAggregate.map(category => {
+            let single_child = this.list_to_tree(category.childCategory);
+            let obj = {
+                _id: category._id,
+                name: category.name,
+                children: single_child
+            };
+            categories.push(obj)
+        })
         res.render('admin/category', {
             categories,
             title: "دسته بندی ها"
         });
-
     }
-
     async create(req, res, next) {
         try {
-            const Categories = await Category.find({parent: null})
+            const Categories = await Category.find({})
             const title = 'ایجاد دسته بندی جدید'
             res.render('admin/category/create', {
                 Categories,
