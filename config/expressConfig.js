@@ -7,9 +7,8 @@ const validator = require('express-validator');
 const session = require('express-session');
 const flash = require('connect-flash');
 const methodOverride = require('method-override')
-const csrf = require("csurf")
+const csrfMiddleware = require("app/http/middleware/csrfMiddleware")
 const csrfHandlerError = require('app/http/middleware/CerfHandlerError');
-
 module.exports = {
     setupExpress: () => {
         const server = http.createServer(app);
@@ -42,10 +41,12 @@ module.exports = {
      * */
     setRoutes: () => {
 
-        app.use( require('app/routes/api/index'))
-        app.use(csrf({cookie: true}), require('app/routes/web/index'))
+        app.use(require('app/routes/api/index'))
+        app.use(csrfMiddleware.handel, require('app/routes/web/index'))
         app.use(require('app/routes/ErrorHandler'))
         app.use(csrfHandlerError.handel)
 
-    }
+    },
+
+
 }

@@ -90,7 +90,6 @@ class CourseController extends Controller {
                 clientRefId: randomString.generate(7),
                 payerIdentity: req.user.email,
             }
-
             axios.post('https://api.payping.ir/v2/pay', params, {
                 headers: this.configHeaderRequest(),
             }).then(async result => {
@@ -105,8 +104,6 @@ class CourseController extends Controller {
                 await order.save();
                 res.redirect(`https://api.payping.ir/v2/pay/gotoipg/${result.data.code}`)
             }).catch(err => {
-
-                return res.json('header:' + err.headers)
                 if (err) {
                     return this.backAndSetAlert(req, res, {
                         title: " مشکلی پیش آمده!",

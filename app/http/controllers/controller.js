@@ -116,7 +116,7 @@ module.exports = class controller {
 
     back(req, res) {
         req.flash('old', req.body);
-            return res.redirect(req.header('Referer') || '/')
+        return res.redirect(req.header('Referer') || '/')
     }
 
 
@@ -124,7 +124,7 @@ module.exports = class controller {
         return {
             'cash-control': "no-cash",
             'content-type': "application/json",
-            'authorization': "Bearer " + config.payping_token,
+            'authorization': "Bearer " + config.payping_tokene,
             "accept": "application/json",
         };
     }
