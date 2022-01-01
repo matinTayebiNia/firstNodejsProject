@@ -10,6 +10,7 @@ const helmet = require('./helmet')
 const cors = require("./cors")
 const apiLimiter = require("./apiLimiter")
 const queueConfig = require("./queueConfig")
+const configSocketIo=require("./configSocketIo")
 module.exports = {
     apiLimiter,
     cors,
@@ -28,5 +29,6 @@ module.exports = {
     AppUrl: env("APP_URL"),
     secretKayJwt: env("SECRET_KEY_JWT"),
     mailer,
-    queueConfig
+    queueConfig,
+    configSocketIo
 }

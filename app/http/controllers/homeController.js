@@ -60,7 +60,7 @@ class homeController extends Controller {
                 user: req.user.id,
                 ...req.body,
             })
-
+            req.body = {}
             await newComment.save();
             return this.back(req, res);
         } catch (error) {

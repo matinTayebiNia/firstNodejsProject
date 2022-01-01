@@ -13,7 +13,8 @@ module.exports = {
     setupExpress: () => {
         const server = http.createServer(app);
         server.listen(config.port || 3000, () => console.log(`Listening on port ${config.port}`));
-
+        const io = require("socket.io")(server)
+        config.configSocketIo(io)
     },
     setConfig: () => {
         //set view
@@ -47,6 +48,8 @@ module.exports = {
         app.use(csrfHandlerError.handel)
 
     },
+
+
 
 
 }
