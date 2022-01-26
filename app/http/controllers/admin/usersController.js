@@ -116,7 +116,6 @@ class usersController extends controller {
         try {
             if (this.isMongoId(req.params.id)) return this.error('کاربر مورد نظر یافت نشد.', 404);
             const status = await this.ValidationData(req);
-            console.log(status)
             if (!status) return this.back(req, res)
             await User.findByIdAndUpdate(req.params.id, {
                 $set: {

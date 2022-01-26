@@ -25,7 +25,6 @@ class registerRequest extends request {
             ,
         ]
     }
-
 }
 
 
