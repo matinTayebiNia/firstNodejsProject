@@ -26,11 +26,11 @@ class ordersController extends controller {
             if (this.isMongoId(req.body.order_id)) return this.error('سفارش مورد نظر یافت نشد.', 404)
             const order = await Order.findById(req.body.order_id).exec()
             await order.remove();
-            this.alert(req, {
-                toast: true,
-                title: "سفارش مورد نظر با موفقیت حذف شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle( "سفارش مورد نظر با موفقیت حذف شد")
+                .setIcon("success")
+                .makeToast()
+                .build();
             res.redirect('/admin/orders');
         } catch (error) {
             next(error);

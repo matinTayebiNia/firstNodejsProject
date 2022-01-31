@@ -1,5 +1,5 @@
 const request = require('app/http/Requests/Request')
-const {check} = require('express-validator/check')
+const { check } = require('express-validator')
 const Category = require('app/models/category')
 
 class categoryRequest extends request {

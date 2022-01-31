@@ -29,10 +29,10 @@
                     </td>
                     <td>
                         <div class="btn-group btn-group-sm">
-                            <%if (can('edit-permission')){%>
+                            <%if (can('update-permission')){%>
                                 <a href="/admin/permission/<%- permission._id %>/edit" class="btn btn-primary">ویرایش</a>
                             <%}%>
-                            <%if (can('delete-permission')){%>
+                            <%if (can('destroy-permission')){%>
                                 <button data-toggle="modal" data-premissionid="<%= permission._id %>"
                                     data-target="#deletePermission" class="btn btn-danger">حذف
                                 </button>

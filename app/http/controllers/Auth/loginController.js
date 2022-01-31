@@ -30,12 +30,11 @@ class loginController extends Controller {
                 if (req.body.remember) {
                     user.setRememberToken(res);
                 }
-                this.alert(req, {
-                    toast: false,
-                    title: "موفقیت",
-                    message: "شما با موفقیت وارد سیستم شدید",
-                    icon: "success",
-                })
+                this.alert(req)
+                    .setTitle("موفقیت")
+                    .setMessage("شما با موفقیت وارد سیستم شدید")
+                    .setIcon("success")
+                    .build();
                 return this.back(req, res);
             })
         })(req, res, next);

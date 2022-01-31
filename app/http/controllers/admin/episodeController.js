@@ -48,12 +48,11 @@ class episodeController extends controller {
             await newEpisode.save();
             if (newEpisode) {
                 await this.setTimeCourse(newEpisode.course)
-                this.alert(req, {
-                    toast: false,
-                    title: "ثبت شد!",
-                    message: "ویدیو مورد نظر  با موفقیت ثبت شد",
-                    icon: "success",
-                })
+                this.alert(req)
+                    .setTitle("ثبت شد!")
+                    .setMessage("ویدیو مورد نظر  با موفقیت ثبت شد")
+                    .setIcon("success")
+                    .build();
                 res.redirect('/admin/episode')
             }
         } catch (e) {
@@ -90,12 +89,11 @@ class episodeController extends controller {
             await this.setTimeCourse(update.course)
             // new time course update
             await this.setTimeCourse(req.body.course)
-            this.alert(req, {
-                toast: false,
-                title: "ویرایش شد!",
-                message: "ویدیو مورد نظر  با موفقیت ویرایش شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("ویرایش شد!")
+                .setMessage("ویدیو مورد نظر  با موفقیت ویرایش شد")
+                .setIcon("success")
+                .build();
             res.redirect('/admin/episode')
 
 
@@ -114,11 +112,11 @@ class episodeController extends controller {
 
             //update course Time
             await this.setTimeCourse(courseID)
-            this.alert(req, {
-                toast: true,
-                title: "ویدیو مورد نظر  با موفقیت حذف شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("ویدیو مورد نظر  با موفقیت حذف شد")
+                .setIcon("success")
+                .makeToast()
+                .build();
             res.redirect('/admin/episode')
 
         } catch (e) {

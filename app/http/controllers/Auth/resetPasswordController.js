@@ -41,12 +41,12 @@ class resetPasswordController extends Controller {
             req.flash('errors', 'عملیات با موفقیت انجام نشد لطفا با پشتیبانی تماس بگیرید.')
             this.back(req, res);
         }
-        this.alert(req, {
-            title: "موفقیت آمیز",
-            message: "رمز عبور شما با موفقیت ویرایش شد",
-            icon: "success",
-            button: "باشه"
-        })
+        this.alert(req)
+            .setTitle("موفقیت")
+            .setMessage("رمز عبور شما با موفقیت ویرایش شد")
+            .setIcon("success")
+            .setButton("باشه")
+            .build();
         user.password = req.body.password;
         await user.save();
         await field.update({use: true});

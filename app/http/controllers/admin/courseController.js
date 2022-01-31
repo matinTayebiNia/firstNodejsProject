@@ -67,13 +67,12 @@ class courseController extends controller {
                 categories
             })
             await newCourse.save();
+            this.alert(req)
+                .setTitle("ثبت شد!")
+                .setMessage("دوره با موفقیت ثبت شد")
+                .setIcon("success")
+                .build();
 
-            this.alert(req, {
-                toast: false,
-                title: "ثبت شد!",
-                message: "دوره با موفقیت ثبت شد",
-                icon: "success",
-            })
             res.redirect('/admin/course')
         } catch (e) {
             next(e);
@@ -139,12 +138,11 @@ class courseController extends controller {
             //update course
             await this.updatingCourse(req, ObjForUpdate);
             //redirect back
-            this.alert(req, {
-                toast: false,
-                title: "ویرایش شد!",
-                message: "دوره با موفقیت ویرایش شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("ویرایش شد!")
+                .setMessage("دوره با موفقیت ویرایش شد")
+                .setIcon("success")
+                .build();
             res.redirect('/admin/course')
         } catch (e) {
             next(e);
@@ -184,11 +182,11 @@ class courseController extends controller {
             )
             //  delete course
             await course.remove();
-            this.alert(req, {
-                toast: true,
-                title: "دوره مورد نظر با موفقیت حذف شد",
-                icon: "success"
-            })
+            this.alert(req)
+                .setTitle( "دوره مورد نظر با موفقیت حذف شد")
+                .setIcon("success")
+                .makeToast()
+                .build();
             res.redirect('/admin/course')
         } catch (e) {
             res.statusCode = 500

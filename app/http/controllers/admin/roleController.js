@@ -50,12 +50,11 @@ class roleController extends controller {
             });
             await newRole.save();
             if (newRole) {
-                this.alert(req, {
-                    toast: false,
-                    title: "ثبت شد!",
-                    message: "مقام مورد نظر  با موفقیت ثبت شد",
-                    icon: "success",
-                })
+                this.alert(req)
+                    .setTitle( "ثبت شد!")
+                    .setIcon("success")
+                    .setMessage( "مقام مورد نظر  با موفقیت ثبت شد")
+                    .build();
                 res.redirect('/admin/role')
             }
         } catch (e) {
@@ -94,14 +93,11 @@ class roleController extends controller {
                 label,
                 permissions
             })
-
-            this.alert(req, {
-                toast: false,
-                title: "ویرایش شد!",
-                message: "مقام مورد نظر با موفقیت ویرایش شد",
-                icon: "success",
-            })
-
+            this.alert(req)
+                .setTitle("ویرایش شد!")
+                .setIcon("success")
+                .setMessage("مقام مورد نظر با موفقیت ویرایش شد")
+                .build();
             res.redirect('/admin/role')
         } catch (e) {
             next(e)
@@ -113,11 +109,11 @@ class roleController extends controller {
             if (this.isMongoId(req.body.role_id)) return this.error('مقام مورد نظر یافت نشد.', 404)
             const role = await Role.findById(req.body.role_id).exec()
             await role.remove();
-            this.alert(req, {
-                toast: true,
-                title: "مقام مورد نظر با موفقیت حذف شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("مقام مورد نظر با موفقیت حذف شد")
+                .setIcon("success")
+                .makeToast()
+                .build();
             res.redirect('/admin/role');
         } catch (e) {
             next(e)

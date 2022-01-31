@@ -1,10 +1,11 @@
 const autoBind = require('auto-bind');
 const Recaptcha = require('express-recaptcha').RecaptchaV2;
-const {validationResult} = require('express-validator/check')
+const {validationResult} = require('express-validator')
 const isMongoId = require('validator/lib/isMongoId');
 const sprintf = require('sprintf-js').sprintf;
 const Bcrypt = require('bcrypt');
 const Category = require('app/models/category')
+const SweetAlertBuilder = require("app/Helpers/SweetAlertBuilder")
 
 
 module.exports = class controller {
@@ -161,14 +162,15 @@ module.exports = class controller {
         return Bcrypt.compareSync(text, req.query.mac);
     }
 
-    alert(req, data) {
-        let title = data.title || '',
-            message = data.message || '',
-            iconInfo = data.icon || '',
-            button = data.button || null,
-            timer = data.timer || 2000,
-            toast = data.toast || false;
-        req.flash('sweetAlert', {title, message, iconInfo, button, timer, toast});
+    alert(req) {
+        return new SweetAlertBuilder(req)
+        /* let title = data.title || '',
+             message = data.message || '',
+             iconInfo = data.icon || '',
+             button = data.button || null,
+             timer = data.timer || 2000,
+             toast = data.toast || false;
+         req.flash('sweetAlert', {title, message, iconInfo, button, timer, toast});*/
     }
 }
 

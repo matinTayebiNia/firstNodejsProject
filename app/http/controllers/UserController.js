@@ -179,7 +179,12 @@ class UserController extends Controller {
     }
 
     backAndSetAlert(req, res, data) {
-        this.alert(req, data)
+        this.alert(req)
+            .setTitle(data.title)
+            .setMessage(data.message)
+            .setIcon(data.icon)
+            .setButton(!!data.button)
+            .build();
         return res.redirect('/user/panel/vip')
     }
 }

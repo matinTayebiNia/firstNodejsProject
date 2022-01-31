@@ -41,12 +41,11 @@ class usersController extends controller {
             if (!status) return this.back(req, res);
             passport.authenticate('local.register', (err, user) => {
                     if (user) {
-                        this.alert(req, {
-                            toast: false,
-                            title: "ثبت شد!",
-                            message: "کاربر مورد نظر  با موفقیت ثبت شد",
-                            icon: "success",
-                        })
+                        this.alert(req)
+                            .setTitle("ثبت شد!")
+                            .setIcon("success")
+                            .setMessage("کاربر مورد نظر  با موفقیت ثبت شد")
+                            .build();
                         return res.redirect('/admin/users')
                     }
                     return this.back(req, res);
@@ -99,13 +98,12 @@ class usersController extends controller {
             const user = await User.findById(req.params.id);
             user.set({roles: req.body.roles});
             await user.save();
-            this.alert(req, {
-                toast: false,
-                title: "دسترسی اعمال شد!",
-                message: "دسترسی مورد نظر برای کاربر مورد نظر اعمال شد",
-                icon: "success",
-                button: "باشه"
-            })
+            this.alert(req)
+                .setTitle("دسترسی اعمال شد!")
+                .setIcon("success")
+                .setMessage("دسترسی مورد نظر برای کاربر مورد نظر اعمال شد")
+                .setButton("باشه")
+                .build();
             return res.redirect('/admin/users')
         } catch (e) {
             next(e)
@@ -122,12 +120,11 @@ class usersController extends controller {
                     ...req.body
                 }
             })
-            this.alert(req, {
-                toast: false,
-                title: "ویرایش شد!",
-                message: "کاربر مورد نظر  با موفقیت ویرایش شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("ویرایش شد!")
+                .setIcon("success")
+                .setMessage("کاربر مورد نظر  با موفقیت ویرایش شد")
+                .build();
             return res.redirect('/admin/users')
         } catch (e) {
             next(e)
@@ -146,17 +143,16 @@ class usersController extends controller {
                 course.remove()
             })
             await user.remove();
-            this.alert(req, {
-                toast: true,
-                title: "کاربر مورد نظر  با موفقیت حذف شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("کاربر مورد نظر  با موفقیت حذف شد")
+                .setIcon("success")
+                .makeToast()
+                .build();
             return this.back(req, res);
         } catch (e) {
             next(e)
         }
     }
-
 }
 
 module.exports = new usersController();

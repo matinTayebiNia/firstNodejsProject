@@ -1,11 +1,20 @@
 require('app-module-path').addPath(__dirname)
 
-const App = require('./app');
 require('dotenv').config();
 global.env = (environment) => {
     return process.env[environment]
 }
+// noinspection JSValidateTypes
 global.config = require('./config')
 
 
-new App();
+class Application {
+    constructor() {
+        config.expressConfig.setupExpress();
+        config.connection.setMongoConnection();
+        config.expressConfig.setConfig()
+        config.expressConfig.setRoutes();
+    }
+}
+
+new Application();

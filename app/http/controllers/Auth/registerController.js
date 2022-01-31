@@ -30,12 +30,12 @@ class registerController extends Controller {
 
                     req.logIn(user, err => {
                         if (err) return this.error('مشکلی در سیستم به وجود آمده لطفا با پشتبانی تماس بگیرید', 500)
-                        this.alert(req, {
-                            title: "موفقیت",
-                            message: "ثبت نام با موفقیت انجام شد ",
-                            icon: "success",
-                            button: "باشه"
-                        })
+                        this.alert(req)
+                            .setTitle("موفقیت")
+                            .setMessage("ثبت نام با موفقیت انجام شد")
+                            .setIcon("success")
+                            .setButton("باشه")
+                            .build();
                     })
                     return res.redirect('/')
                 }

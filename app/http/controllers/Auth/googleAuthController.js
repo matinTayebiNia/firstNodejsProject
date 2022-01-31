@@ -14,12 +14,11 @@ class googleAuthController extends Controller {
             if (err) return res.redirect('/auth/register')
             if (!user) return res.redirect('/auth/register')
             user.setRememberToken(res);
-            this.alert(req, {
-                toast: false,
-                title: "موفقیت",
-                message: "ورود شما از اکانت گوگل موفقیت آمیز بود",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("موفقیت")
+                .setMessage("ورود شما از اکانت گوگل موفقیت آمیز بود")
+                .setIcon("success")
+                .build();
             return res.redirect('/');
         })(req, res, next);
     }

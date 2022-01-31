@@ -61,17 +61,17 @@ routes.delete('/comments/delete/:id', gate.can('delete-comments'), commentContro
 routes.get('/permission', gate.can('show-permission'), permissionController.index);
 routes.get('/permission/create', gate.can('create-permission'), permissionController.create)
 routes.post('/permission/create', gate.can('create-permission'), permissionRequest.handel(), permissionController.store)
-routes.get('/permission/:id/edit', gate.can('edit-permission'), permissionController.edit)
-routes.put('/permission/update/:id', gate.can('edit-permission'), permissionRequest.handel(), permissionController.update)
-routes.delete('/permission/delete/:id', gate.can('delete-permission'), permissionController.destroy)
+routes.get('/permission/:id/edit', gate.can('update-permission'), permissionController.edit)
+routes.put('/permission/update/:id', gate.can('update-permission'), permissionRequest.handel(), permissionController.update)
+routes.delete('/permission/delete/:id', gate.can('destroy-permission'), permissionController.destroy)
 
 //role routes
 routes.get('/role', gate.can('show-role'), roleController.index);
 routes.get('/role/create', gate.can('create-role'), roleController.create)
 routes.post('/role/create', gate.can('create-role'), roleRequest.handel(), roleController.store)
-routes.get('/role/:id/edit', gate.can('edit-role'), roleController.edit)
-routes.put('/role/update/:id', gate.can('edit-role'), roleRequest.handel(), roleController.update)
-routes.delete('/role/delete/:id', gate.can('delete-role'), roleController.destroy)
+routes.get('/role/:id/edit', gate.can('update-role'), roleController.edit)
+routes.put('/role/update/:id', gate.can('update-role'), roleRequest.handel(), roleController.update)
+routes.delete('/role/delete/:id', gate.can('destroy-role'), roleController.destroy)
 
 //users routes
 routes.get('/users', gate.can('show-user'), usersController.index);
@@ -79,17 +79,17 @@ routes.get('/users/create', gate.can('create-user'), usersController.create)
 routes.get('/users/:id/addRole', gate.can('addRole-user'), usersController.addRole)
 routes.put('/users/:id/storeAddRole', gate.can('addRole-user'), usersController.storeAddRole)
 routes.post('/users/create', gate.can('create-user'), registerRequest.handel(), usersController.store)
-routes.get('/users/:id/edit', gate.can('edit-user'), usersController.edit)
-routes.put('/users/update/:id', gate.can('edit-user'), userRequest.handel(), usersController.update)
+routes.get('/users/:id/edit', gate.can('update-user'), usersController.edit)
+routes.put('/users/update/:id', gate.can('update-user'), userRequest.handel(), usersController.update)
 routes.delete('/users/delete/:id', gate.can('delete-user'), usersController.destroy)
 
 //categories route
 routes.get('/categories', gate.can('show-categories'), categoryController.index);
 routes.get('/categories/create', gate.can('create-categories'), categoryController.create)
 routes.post('/categories/create', gate.can('create-categories'), categoryRequest.handel(), categoryController.store)
-routes.delete('/categories/delete/:id', gate.can('delete-categories'), categoryController.destroy)
-routes.get('/categories/:id/edit', gate.can('edit-categories'), categoryController.edit)
-routes.put('/categories/update/:id', gate.can('edit-categories'),
+routes.delete('/categories/delete/:id', gate.can('destroy-categories'), categoryController.destroy)
+routes.get('/categories/:id/edit', gate.can('update-categories'), categoryController.edit)
+routes.put('/categories/update/:id', gate.can('update-categories'),
     categoryRequest.handel(), categoryController.update)
 // orders routes
 

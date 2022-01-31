@@ -3,7 +3,6 @@ const app = express();
 const http = require('http');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const validator = require('express-validator');
 const session = require('express-session');
 const flash = require('connect-flash');
 const methodOverride = require('method-override')
@@ -22,8 +21,6 @@ module.exports = {
         //use body parser package
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended: true}));
-        //use express validator
-        app.use(validator());
         //use session and set config for session
         app.use(session({...config.session}));
         //use cookieParser and set secretKey for cookie

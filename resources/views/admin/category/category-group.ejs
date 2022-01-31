@@ -5,7 +5,7 @@
             <div class="d-flex">
                 <span><%= category.name %></span>
                 <div class="actions mr-2">
-                    <% if (can('delete-categories')){ %>
+                    <% if (can('destroy-categories')){ %>
                         <form method="post" id="cate-<%= category._id %>-delete"
                               action="/admin/categories/delete/<%= category._id %>?_method=delete&_csrf=<%= req.csrfToken() %>">
                             <input type="hidden" name="category_id" value="<%= category._id %>">
@@ -15,7 +15,7 @@
                                    if (result){event.preventDefault();document.getElementById('cate-<%= category._id %>-delete').submit()}"
                            class="badge badge-danger">حذف</a>
                     <% } %>
-                    <% if (can('edit-categories')){ %>
+                    <% if (can('update-categories')){ %>
                         <a href="/admin/categories/<%= category._id %>/edit"
                            class="badge badge-warning">ویرایش</a>
                     <% } %>

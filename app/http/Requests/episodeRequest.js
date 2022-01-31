@@ -1,7 +1,5 @@
 const request = require('app/http/Requests/Request')
-const {check} = require('express-validator/check')
-const Course = require('app/models/course')
-const path = require('path')
+const { check } = require('express-validator')
 
 class episodeRequest extends request {
     handel() {

@@ -43,12 +43,11 @@ class categoryController extends controller {
             });
             await newPermission.save();
             if (newPermission) {
-                this.alert(req, {
-                    toast: false,
-                    title: "ثبت شد!",
-                    message: "دسته بندی مورد نظر  با موفقیت ثبت شد",
-                    icon: "success",
-                })
+                this.alert(req)
+                    .setTitle( "ثبت شد!")
+                    .setMessage("دسته بندی مورد نظر  با موفقیت ثبت شد")
+                    .setIcon("success")
+                    .build();
                 res.redirect('/admin/permission')
             }
         } catch (e) {
@@ -80,12 +79,11 @@ class categoryController extends controller {
                 name,
                 label,
             })
-            this.alert(req, {
-                toast: false,
-                title: "ویرایش شد!",
-                message: "دسترسی مورد نظر  با موفقیت ویرایش شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle( "ویرایش شد!")
+                .setMessage("دسترسی مورد نظر  با موفقیت ویرایش شد")
+                .setIcon("success")
+                .build();
             res.redirect('/admin/permission')
         } catch (e) {
             next(e)
@@ -97,11 +95,11 @@ class categoryController extends controller {
             if (this.isMongoId(req.body.permission_id)) return this.error('دسته بندی مورد نظر یافت نشد.', 404)
             const permission = await Permission.findById(req.body.permission_id).exec()
             await permission.remove();
-            this.alert(req, {
-                toast: true,
-                title: "دسترسی مورد نظر با موفقیت حذف شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle( "دسترسی مورد نظر با موفقیت حذف شد")
+                .setIcon("success")
+                .makeToast()
+                .build();
             res.redirect('/admin/permission');
 
         } catch (e) {

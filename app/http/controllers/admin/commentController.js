@@ -42,11 +42,11 @@ class commentController extends controller {
             await comment.belongTo.incr('CommentCount')
             comment.approved = true
             await comment.save();
-            this.alert(req, {
-                toast: true,
-                title: "کامنت مورد نظر  با موفقیت تایید شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("کامنت مورد نظر  با موفقیت تایید شد")
+                .setIcon("success")
+                .makeToast()
+                .build();
             return res.redirect('/admin/comments')
         } catch (e) {
             next(e)
@@ -60,11 +60,11 @@ class commentController extends controller {
             if (!comment) this.error('چنین نظری وجود ندارد', 404)
             await comment.belongTo.decr('CommentCount')
             await comment.remove();
-            this.alert(req, {
-                toast: true,
-                title: "کامنت مورد نظر  با موفقیت حذف شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("کامنت مورد نظر  با موفقیت حذف شد")
+                .setIcon("success")
+                .makeToast()
+                .build();
             return res.redirect('/admin/comments')
         } catch (e) {
             next(e);

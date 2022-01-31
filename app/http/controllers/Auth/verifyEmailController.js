@@ -19,12 +19,12 @@ class VerifyEmailController extends controller {
         try {
             //resendEmailVerifyAt
             await ActivationCode().userHasActivationCode(req.user)
-            this.alert(req, {
-                title: "ارسال شد",
-                message: "پیام تایید ایمیل،به ایمیل شما ارسال شد",
-                icon: "success",
-                button: "بسیار خوب"
-            })
+            this.alert(req)
+                .setTitle("ارسال شد")
+                .setMessage("پیام تایید ایمیل،به ایمیل شما ارسال شد")
+                .setIcon("success")
+                .setButton("بسیار خوب")
+                .build();
             return this.back(req, res);
 
         } catch (e) {

@@ -1,5 +1,5 @@
 const request = require('app/http/Requests/Request')
-const {check} = require('express-validator/check')
+const { check } = require('express-validator')
 const Permission = require('app/models/permission')
 
 class permissionRequest extends request {

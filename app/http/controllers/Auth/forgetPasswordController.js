@@ -36,12 +36,12 @@ class forgetPasswordController extends Controller {
 
             await queueMailer(newPasswordReset, "فراموشی رمز عبور")
 
-            this.alert(req, {
-                icon: "info",
-                button: "باشه",
-                title: "موفقیت آمیز",
-                message: "پیام بازیابی رمز عبور به پست الکترونیک شما ارسال شد",
-            })
+            this.alert(req)
+                .setTitle("موفقیت آمیز")
+                .setMessage("پیام بازیابی رمز عبور به پست الکترونیک شما ارسال شد")
+                .setIcon("info")
+                .setButton("باشه")
+                .build();
             res.redirect('/')
         } catch (e) {
             console.log(e)

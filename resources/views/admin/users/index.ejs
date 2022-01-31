@@ -36,7 +36,7 @@
                 </td>
                 <td>
                     <div class="btn-group btn-group-sm">
-                        <% if (can('edit-user')){ %>
+                        <% if (can('update-user')){ %>
                             <a href="/admin/users/<%= user._id %>/edit" class="btn btn-primary">ویرایش</a>
                         <% } %>
                         <% if (user.admin){ %>

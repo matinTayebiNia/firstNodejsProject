@@ -21,6 +21,7 @@ class categoryController extends controller {
             title: "دسته بندی ها"
         });
     }
+
     async create(req, res, next) {
         try {
             const Categories = await Category.find({})
@@ -46,12 +47,11 @@ class categoryController extends controller {
             });
             await newCategory.save();
             if (newCategory) {
-                this.alert(req, {
-                    toast: false,
-                    title: "ثبت شد!",
-                    message: "دسته بندی مورد نظر  با موفقیت ثبت شد",
-                    icon: "success",
-                })
+                this.alert(req)
+                    .setTitle("ثبت شد!")
+                    .setMessage("دسته بندی مورد نظر  با موفقیت ثبت شد")
+                    .setIcon("success")
+                    .build();
                 res.redirect('/admin/categories')
             }
         } catch (e) {
@@ -85,12 +85,11 @@ class categoryController extends controller {
                 parent: parent !== 'none' ? parent : null,
                 slug: this.slug(name)
             })
-            this.alert(req, {
-                toast: false,
-                title: "ویرایش شد!",
-                message: "دسته بندی مورد نظر  با موفقیت ویرایش شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("ویرایش شد!")
+                .setMessage("دسته بندی مورد نظر  با موفقیت ویرایش شد")
+                .setIcon("success")
+                .build();
             res.redirect('/admin/categories')
         } catch (e) {
             next(e)
@@ -103,11 +102,11 @@ class categoryController extends controller {
             const category = await Category.findById(req.body.category_id).populate('chileCategory').exec()
             category.chileCategory.forEach(category => category.remove())
             await category.remove();
-            this.alert(req, {
-                toast: true,
-                title: "دسته بندی مورد نظر  با موفقیت حذف شد",
-                icon: "success",
-            })
+            this.alert(req)
+                .setTitle("دسته بندی مورد نظر  با موفقیت حذف شد")
+                .setIcon("success")
+                .makeToast()
+                .build();
             res.redirect('/admin/categories');
 
         } catch (e) {

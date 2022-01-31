@@ -1,6 +1,4 @@
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 module.exports = {
     name:"session_nodejsCourse",
     secret: process.env.SESSION_SECRET_KEY,
@@ -9,6 +7,7 @@ module.exports = {
     cookie: {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 2),
     },
-    store: new MongoStore({mongooseConnection: mongoose.connection}),
-
+    store: MongoStore.create({
+        mongoUrl: process.env.DB_HOST,
+    })
 }

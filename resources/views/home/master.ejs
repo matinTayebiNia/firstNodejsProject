@@ -127,18 +127,18 @@ if (sweetAlert.length === 1){
 <script>
     <% if (data.toast){ %>
     Toast.fire({
-        icon: '<%= data.iconInfo %>',
+        icon: '<%= data.icon %>',
         title: '<%= data.title %>'
     })
     <% } else { %>
     Swal.fire({
         toast: false,
-        icon: '<%= data.iconInfo %>',
+        icon: '<%= data.icon%>',
         title: '<%= data.title %>',
         text: '<%= data.message %>',
-        showConfirmButton: <%= data.button !== null %>,
+        showConfirmButton: <%= data.button !== undefined %>,
         confirmButtonText: '<%= data.button %>',
-        timer: <%= data.button === null ? data.timer : 0 %>,
+        timer: <%= data.button === undefined ? data.timer : 0 %>,
         timerProgressBar: <%= !!data.timer %>,
     })
     <% } %>

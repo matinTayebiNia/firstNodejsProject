@@ -29,10 +29,10 @@
                     </td>
                     <td>
                         <div class="btn-group btn-group-sm">
-                          <% if (can('edit-role')){%>
+                          <% if (can('update-role')){%>
                                 <a href="/admin/role/<%- role._id %>/edit" class="btn btn-primary">ویرایش</a>
                           <% } %> 
-                          <% if (can('delete-role')){%>
+                          <% if (can('destroy-role')){%>
                             <button data-toggle="modal" data-roleid="<%= role._id %>" data-target="#deleteRoles"
                                 class="btn btn-danger">حذف
                             </button>
